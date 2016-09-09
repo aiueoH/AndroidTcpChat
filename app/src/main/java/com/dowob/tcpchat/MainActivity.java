@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         ///////////////////////////////////////////////////////////////////////////////////////////
         // client setting
         ///////////////////////////////////////////////////////////////////////////////////////////
-        clientSettingLayout = (LinearLayout) findViewById(R.id.client_connect);
+        clientSettingLayout = (LinearLayout) findViewById(R.id.client_setting);
         connectHostEditText = (EditText) findViewById(R.id.editText_connect_host);
         connectPortEditText = (EditText) findViewById(R.id.editText_connect_port);
         connectButton = (Button) findViewById(R.id.button_connect);

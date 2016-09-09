@@ -25,7 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:id="@+id/linearLayour_server_setting">
+            android:id="@+id/linearLayour_server_setting"
+            android:visibility="visible">
 
             <EditText
                 android:layout_width="wrap_content"
@@ -94,10 +95,11 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/client_connect"
+            android:id="@+id/client_setting"
             android:layout_weight="1"
             android:gravity="center"
-            android:transitionGroup="false">
+            android:transitionGroup="false"
+            android:visibility="visible">
 
             <EditText
                 android:layout_width="wrap_content"
