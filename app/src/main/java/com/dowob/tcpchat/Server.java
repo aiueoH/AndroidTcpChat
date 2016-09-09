@@ -26,7 +26,7 @@ public class Server {
             public void run() {
                 try {
                     while (true) {
-                        final Socket socket = serverSocket.accept();
+                        Socket socket = serverSocket.accept();
                         handleNewClient(socket);
                     }
                 } catch (IOException e) {
