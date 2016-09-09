@@ -81,12 +81,14 @@ public class Server {
     }
 
     private void sendToAllClients(String data) throws IOException {
-        for (Socket clientSocket : clients.keySet()) {
-            if (clientSocket.isClosed())
-                continue;
-            DataOutputStream dos = clients.get(clientSocket);
-            dos.writeUTF(data);
-            dos.flush();
+        synchronized (clients) {
+            for (Socket clientSocket : clients.keySet()) {
+                if (clientSocket.isClosed())
+                    continue;
+                DataOutputStream dos = clients.get(clientSocket);
+                dos.writeUTF(data);
+                dos.flush();
+            }
         }
     }
 
