@@ -55,32 +55,6 @@ public class MainActivity extends AppCompatActivity {
         serverStartListeningButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String port = serverPortEditText.getText().toString();
-                if (TextUtils.isEmpty(port))
-                    return;
-                int portInt = Integer.parseInt(port);
-                if (!(portInt >= 1024 && portInt <= 65535)) {
-                    Toast.makeText(MainActivity.this, "Incorrect port", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                server = new Server();
-                server.setOnReceiveDataListener(new OnReceiveDataListener() {
-                    @Override
-                    public void onReceiveData(final String data, final SocketAddress remoteSocketAddress) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                appendServerConsole(String.format("[%s] : %s", remoteSocketAddress.toString(), data));
-                            }
-                        });
-                    }
-                });
-                server.bind(Integer.parseInt(port));
-                serverSettingLayout.setVisibility(View.GONE);
-                serverConsoleLayout.setVisibility(View.VISIBLE);
-                serverConsoleTextView.setText("");
-                appendServerConsole(String.format("Ip:%s Port:%s", getWifiIp(), port));
-                server.startListeningAsync();
             }
         });
 
@@ -94,9 +68,7 @@ public class MainActivity extends AppCompatActivity {
         closeServerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                server.close();
-                serverSettingLayout.setVisibility(View.VISIBLE);
-                serverConsoleLayout.setVisibility(View.GONE);
+
             }
         });
 
@@ -110,47 +82,6 @@ public class MainActivity extends AppCompatActivity {
         connectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String ip = connectHostEditText.getText().toString();
-                final String port = connectPortEditText.getText().toString();
-                if (TextUtils.isEmpty(ip) || TextUtils.isEmpty(port))
-                    return;
-                client = new Client();
-                client.setOnReceiveDataListener(new OnReceiveDataListener() {
-                    @Override
-                    public void onReceiveData(final String data, final SocketAddress remoteSocketAddress) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                appendClientConsole(String.format("%s", data));
-                            }
-                        });
-                    }
-                });
-                client.setOnDisconnectListener(new Runnable() {
-                    @Override
-                    public void run() {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                clientSettingLayout.setVisibility(View.VISIBLE);
-                                clientChatLayout.setVisibility(View.GONE);
-                            }
-                        });
-                    }
-                });
-                client.connectAsync(ip, Integer.parseInt(port), new Runnable() {
-                    @Override
-                    public void run() {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                appendClientConsole(String.format("Connected to %s:%s", ip, port));
-                                clientSettingLayout.setVisibility(View.GONE);
-                                clientChatLayout.setVisibility(View.VISIBLE);
-                            }
-                        });
-                    }
-                });
             }
         });
 
@@ -165,21 +96,12 @@ public class MainActivity extends AppCompatActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String text = messageEditText.getText().toString();
-                if (!TextUtils.isEmpty(text)) {
-                    messageEditText.setText("");
-                    client.send(text);
-                }
             }
         });
         disconnectButton = (Button) findViewById(R.id.button_disconnect);
         disconnectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                client.close();
-                clientConsoleTextView.setText("");
-                clientSettingLayout.setVisibility(View.VISIBLE);
-                clientChatLayout.setVisibility(View.GONE);
             }
         });
     }
