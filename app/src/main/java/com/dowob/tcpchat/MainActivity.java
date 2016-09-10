@@ -138,18 +138,12 @@ public class MainActivity extends AppCompatActivity {
                         });
                     }
                 });
-                client.connectAsync(ip, Integer.parseInt(port), new Runnable() {
-                    @Override
-                    public void run() {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                appendClientConsole(String.format("Connected to %s:%s", ip, port));
-                                clientSettingLayout.setVisibility(View.GONE);
-                                clientChatLayout.setVisibility(View.VISIBLE);
-                            }
-                        });
-                    }
+                client.connectAsync(ip, Integer.parseInt(port), () -> {
+                    runOnUiThread(() -> {
+                        appendClientConsole(String.format("Connected to %s:%s", ip, port));
+                        clientSettingLayout.setVisibility(View.GONE);
+                        clientChatLayout.setVisibility(View.VISIBLE);
+                    });
                 });
             }
         });
