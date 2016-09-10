@@ -44,6 +44,7 @@ public class Server {
                     // 通知大家有新人進來
                     String newClientMsg = String.format("[%s] 加入了聊天室", socket.getRemoteSocketAddress());
                     sendToAllClients(newClientMsg);
+                    sendToAllClients(newClientMsg);
 
                     // 將新的 client 加入 client 列表
                     DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
@@ -67,10 +68,13 @@ public class Server {
                         String msg = String.format("[%s] 說 : %s", socket.getRemoteSocketAddress(), data);
                         sendToAllClients(msg);
                     }
+                    // 關閉接收資料的串流
                     dis.close();
+                    // 從 clients 列表中移除
                     synchronized (clients) {
                         clients.remove(socket);
                     }
+                    // 告訴大家有人離開了
                     String msg = String.format("[%s] 離開了", socket.getRemoteSocketAddress());
                     sendToAllClients(msg);
                 } catch (IOException e) {

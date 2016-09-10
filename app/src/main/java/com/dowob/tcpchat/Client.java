@@ -18,7 +18,7 @@ public class Client {
             @Override
             public void run() {
                 try {
-                    socket.connect(new InetSocketAddress(host, port), 5 * 1000);
+                    socket.connect(new InetSocketAddress(host, port));
                     dataOutputStream = new DataOutputStream(socket.getOutputStream());
                     if (onConnectedListener != null)
                         onConnectedListener.run();
@@ -34,6 +34,7 @@ public class Client {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                // 打開接收資料的串流
                 DataInputStream dis;
                 try {
                     dis = new DataInputStream(socket.getInputStream());
@@ -41,6 +42,7 @@ public class Client {
                     e.printStackTrace();
                     return;
                 }
+                // 開始不斷接收資料
                 while (true) {
                     try {
                         String data = dis.readUTF();
@@ -51,11 +53,13 @@ public class Client {
                         break;
                     }
                 }
+                // 關閉串流
                 try {
                     dis.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                // 通知斷線
                 if (onDisconnectListener != null)
                     onDisconnectListener.run();
             }
