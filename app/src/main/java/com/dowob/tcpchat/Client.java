@@ -62,13 +62,18 @@ public class Client {
         }).start();
     }
 
-    public void send(String data) {
-        try {
-            dataOutputStream.writeUTF(data);
-            dataOutputStream.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void send(final String data) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    dataOutputStream.writeUTF(data);
+                    dataOutputStream.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     public void setOnReceiveDataListener(OnReceiveDataListener onReceiveDataListener) {
